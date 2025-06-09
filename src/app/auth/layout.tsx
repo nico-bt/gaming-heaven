@@ -3,5 +3,7 @@ export default function AuthLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <div>{children}</div>;
+  return (
+    <div className="w-full bg-black/50 h-[calc(100vh-3.5rem)]">{children}</div>
+  );
 }
