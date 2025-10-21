@@ -1,44 +1,42 @@
-"use client";
+"use client"
 
-import { logout } from "@/app/auth/login/actions";
-import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
-import { MouseEvent, useState } from "react";
-import Mario from "@/components/animations/Mario";
-import { SessionType } from "@/lib/session";
-import Image from "next/image";
+import { logout } from "@/app/auth/login/actions"
+import Link from "next/link"
+import { usePathname, useSearchParams } from "next/navigation"
+import { MouseEvent, useState } from "react"
+import Mario from "@/components/animations/Mario"
+import { SessionType } from "@/lib/session"
+import Image from "next/image"
 
 function Navbar({ session }: { session: SessionType }) {
-  const pathname = usePathname();
+  const pathname = usePathname()
 
-  const searchParams = useSearchParams();
-  const currentSort = searchParams.get("sort");
+  const searchParams = useSearchParams()
+  const currentSort = searchParams.get("sort")
 
-  const [showHoverAnimation, setShowHoverAnimation] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [showHoverAnimation, setShowHoverAnimation] = useState(false)
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
 
   const handleHoverNav = () => {
-    setShowHoverAnimation(true);
-  };
+    setShowHoverAnimation(true)
+  }
   const handleHoverOutNav = () => {
-    setShowHoverAnimation(false);
-  };
+    setShowHoverAnimation(false)
+  }
 
-  const handleMouseMove = (
-    e: MouseEvent<HTMLElement, globalThis.MouseEvent>
-  ) => {
-    setMousePosition({ x: e.clientX, y: e.clientY });
-  };
+  const handleMouseMove = (e: MouseEvent<HTMLElement, globalThis.MouseEvent>) => {
+    setMousePosition({ x: e.clientX, y: e.clientY })
+  }
 
   return (
     <nav
-      className="flex items-center justify-between px-6 py-3 bg-black text-white shadow-md"
+      className="flex items-center justify-between px-6 pt-3 pb-1 bg-black text-white shadow-md"
       onMouseOver={handleHoverNav}
       onMouseLeave={handleHoverOutNav}
       onMouseMove={(e) => handleMouseMove(e)}
     >
       <Link
-        className="z-10 cursor-pointer animate-fadeInLong flex gap-2"
+        className="z-10 cursor-pointer animate-fadeInLong flex gap-1 flex-col items-center"
         href={currentSort ? `/?sort=${currentSort}` : "/"}
       >
         <Image
@@ -49,6 +47,7 @@ function Navbar({ session }: { session: SessionType }) {
           className="border rounded-lg border-pink-600 bg-pink-100 p-1 shadow-lg animate-fadeInUpShort"
           priority
         />
+        <span className="font-bold text-[11px] self-center uppercase">Home</span>
       </Link>
 
       {!session.isAuth ? (
@@ -64,9 +63,7 @@ function Navbar({ session }: { session: SessionType }) {
 
           <Link
             href="/auth/login"
-            className={`z-10 hover:text-gray-300 ${
-              pathname === "/auth/login" ? "border-b-2" : ""
-            }`}
+            className={`z-10 hover:text-gray-300 ${pathname === "/auth/login" ? "border-b-2" : ""}`}
           >
             Login
           </Link>
@@ -82,7 +79,7 @@ function Navbar({ session }: { session: SessionType }) {
 
       {showHoverAnimation && <Mario positionX={mousePosition.x} />}
     </nav>
-  );
+  )
 }
 
-export default Navbar;
+export default Navbar
