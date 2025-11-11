@@ -1,7 +1,7 @@
 import { CollectedGame } from "@prisma/client"
 import { Loader2, TrashIcon } from "lucide-react"
 import Link from "next/link"
-import { useState } from "react"
+import { useTransition } from "react"
 import { deleteGame } from "./actions"
 import { useToast } from "@/hooks/use-toast"
 import { useSearchParams } from "next/navigation"
@@ -22,18 +22,18 @@ function Item({ item }: { item: CollectedGame }) {
   const currentSort = searchParams.get("sort")
 
   const { toast } = useToast()
-  const [isLoading, setIsloading] = useState(false)
+  const [isPending, startTransition] = useTransition()
 
-  const handleDelete = async (id: number, gameName: string) => {
-    setIsloading(true)
-    await deleteGame(id)
-    toast({
-      title: "Game removed",
-      description: `${gameName} has been removed from your collection`,
-      variant: "destructive",
-      duration: 3000,
+  const handleDelete = (id: number, gameName: string) => {
+    startTransition(async () => {
+      await deleteGame(id)
+      toast({
+        title: "Game removed",
+        description: `${gameName} has been removed from your collection`,
+        variant: "destructive",
+        duration: 3000,
+      })
     })
-    setIsloading(false)
   }
 
   return (
@@ -55,7 +55,7 @@ function Item({ item }: { item: CollectedGame }) {
         />
       </Link>
 
-      {isLoading ? (
+      {isPending ? (
         <div className="top-0 bottom-0 w-full grid place-items-center z-20 absolute bg-gray-0 bg-opacity-50 rounded-xl">
           <Loader2 className="animate-spin" />
         </div>
